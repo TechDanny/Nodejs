@@ -40,7 +40,6 @@
             color: #777;
             text-align: center;
             margin: 80px auto 20px;
-            bottom: 0;
         }
         h2 {
             margin-bottom: 40px;
@@ -79,3 +78,20 @@
             font-size: 1.2em;
             cursor: pointer;
         }
+
+        .blogs a {
+            display: block;
+            margin: 40px 0;
+            padding-left: 30px;
+            border-left: 6px solid crimson;
+        }
+        .blogs a:hover h3{
+            color: crimson;
+        }
+        .not-found {
+            margin-left: 240px;
+        }
+        .social-icon {
+            margin: 20px 10px;
+            color: #7743DB;
+         }
