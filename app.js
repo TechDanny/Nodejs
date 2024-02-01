@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
 
 //blog route
 app.get('/blogs' , (req, res) => {
-    Blog.find().sort({createdAt: -1}) // arranges blog from the newest to the oldest
+    Blog.find().sort({createdAt: -1}) //arranges blog from the newest to the oldest
         .then((result) => {
             res.render("index", {title: "All Blogs", blogs: result});
         })
