@@ -10,7 +10,7 @@ const app = express()
 // connect to mongodb
 const dbURI = "mongodb://localhost:27017/TechDanny-Blog";
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true})
-    .then((result) => app.listen(3000))
+    .then((result) => app.listen(5000))
     .catch((err) => console.log(err))
 
 
@@ -19,6 +19,7 @@ app.set("view engine", "ejs");
 
 //middleware and static files
 app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 
@@ -37,13 +38,48 @@ app.get('/blogs' , (req, res) => {
             console.log(err);
         })
     });
+app.post('/blogs', (req, res) => {
+    const blog = new Blog(req.body);
+
+    blog.save()
+    .then((result) => {
+        res.redirect("/blogs");
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+});
+
+app.get('/blogs/create', (req, res) => {
+    res.render('create', {title: 'Create'});
+})
+
+app.get('/blogs/:id', (req, res) => {
+    const id = req.params.id;
+    Blog.findById(id)
+    .then((result) => {
+        res.render("details", { blog: result, title: "Blog Details" })
+    })
+    .catch((err) => {
+        res.status(404).render('404', {title: 'Page Error'});
+    })
+});
+
+app.delete('/blogs/:id', (req, res) => {
+    const id = req.params.id;
+
+    Blog.findByIdAndDelete(id)
+    .then((result) => {
+        res.json({ redirect: '/blogs'})
+    })
+    .catch((err) => {
+        conole.log(err)
+    })
+})
 
 app.get('/about', (req, res) => {
     res.render('about', {title: 'About'});
 });
-app.get('/blogs/create', (req, res) => {
-    res.render('create', {title: 'Create'});
-})
 
 //redirect pages
 app.get('/about-us', (req, res) => {
